@@ -4,57 +4,52 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Player Speed")]
-    private float horizontalInput;
-    private float verticalInput;
+    private float xInput;
+    private float zInput;
     
     [Range(1, 20)] [SerializeField] private float speed = 10.0f;
+    [Range(-20, 0)] [SerializeField] private float gravity = -9.81f;
+    
+    
+    [SerializeField] private CharacterController controller;
+    //Jumping
+    [SerializeField] private Transform groundCheck;
 
-    public CharacterController controller;
-
-    [Range(50, 200)] [SerializeField] private float mouseSensitivity = 100.0f;
-
-    public Transform orientation;
-
-    private float xRotation = 0f;
-    private float yRotation = 0f;
-
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        if (orientation == null)
-        {
-            orientation = transform; // Reset player's transform
-        }
-    }
-
+    [SerializeField] private float jumpHeight = 3f;
+    // Sphere radius
+    [SerializeField] private float groundDistance = 0.4f;
+    [SerializeField] private LayerMask groundMask;
+    
+    private Vector3 velocity;
+    private bool isGrounded;
+    
     private void Update()
     {
-        // Mouse Movement & Look Direction
+        // Jump
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime; 
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-
-        yRotation += mouseX;
-        xRotation -= mouseY;  // Subtract to invert the control to match typical FPS behavior
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
-        // Rotate Camera and Player
-        orientation.localRotation = Quaternion.Euler(0f, yRotation, 0f); // Rotate around the Y-axis for yaw
-        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f); // Rotate the camera for pitch and yaw
-
-        // WASD Movement
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
-
-        Vector3 movement = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        if (movement.magnitude > 1)
+        if (isGrounded && velocity.y < 0)
         {
-            movement.Normalize();
+            velocity.y = -2f;
         }
 
-        transform.Translate(movement * Time.deltaTime * speed, Space.World);
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Debug.Log("Jump");
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+        
+        // WASD Movement
+        xInput = Input.GetAxis("Horizontal");
+        zInput = Input.GetAxis("Vertical");
+
+        Vector3 movement = transform.right * xInput + transform.forward * zInput;
+
+        controller.Move(movement * speed * Time.deltaTime);
+
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+
+     
     }
 }
