@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [Range(1, 20)] [SerializeField] private float speed = 10.0f;
     [Range(-20, 0)] [SerializeField] private float gravity = -9.81f;
     
-    
+   
     [SerializeField] private CharacterController controller;
     //Jumping
     [SerializeField] private Transform groundCheck;
@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     
     private void Update()
     {
+        // Bullet
+
+       
         // Jump
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 

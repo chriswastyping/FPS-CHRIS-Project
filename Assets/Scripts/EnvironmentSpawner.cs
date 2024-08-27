@@ -26,12 +26,12 @@ public class EnvironmentSpawner : MonoBehaviour
     private float enemySpawnRange = 90;
     void Start()
     {
-        TileGenerator();
+        spawnGenerator();
        // PlayerSpawner();
         EnemeySpawner();
     }
 
-    private void TileGenerator()
+    private void spawnGenerator()
     {
         // Calculate total grid dimensions
         float totalWidth = (columnLength - 1) * xSpace;
@@ -66,12 +66,14 @@ public class EnvironmentSpawner : MonoBehaviour
     }
     */
 
-    private void EnemeySpawner()
+    private Vector3 EnemeySpawner()
     {
         float spawnPosX = Random.Range(-enemySpawnRange, enemySpawnRange);
         float spawnPosZ = Random.Range(-enemySpawnRange, enemySpawnRange);
         Vector3 randomPos = new Vector3(spawnPosX, 5, spawnPosZ);
      
         Instantiate(enemyPrefab, randomPos, enemyPrefab.transform.rotation);
+
+        return randomPos;
     }
 }
