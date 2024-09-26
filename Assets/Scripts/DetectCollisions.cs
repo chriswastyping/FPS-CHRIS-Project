@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DetectCollisions : MonoBehaviour
 {
-   public GameObject enemyHit;
+   public GameObject[] enemyHit;
   // public GameObject bullet;
    private void OnTriggerEnter(Collider other)
    {

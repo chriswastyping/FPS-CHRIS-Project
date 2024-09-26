@@ -4,25 +4,42 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float speed = 3;
-
-    private Rigidbody enemyRb;
-
-    private GameObject player;
+   
     
+    protected Transform playerTransform;
+    
+    [Range(15, 40)] [SerializeField] protected float speed = 25;
+
+    protected Rigidbody _enemyRb;
+
+    protected Vector3 _lookDirection;
+    
+   
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
-        enemyRb = GetComponent<Rigidbody>();
-        player = GameObject.Find("Player");
+        FindPlayer();
+        _enemyRb = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         // Follow the player
-        Vector3 lookDirection = (player.transform.position - transform.position).normalized;
+       FollowPlayer();
         
-        enemyRb.AddForce(lookDirection * speed);
+    }
+    
+    protected void FindPlayer()
+    {
+        playerTransform = PlayerController.Instance.transform;
+    }
+
+    protected void FollowPlayer()
+    {
+        _enemyRb.AddForce((playerTransform.position - transform.position).normalized * speed); 
+        _enemyRb.AddForce(_lookDirection * speed);
     }
 }
+

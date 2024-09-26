@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
+    public static PlayerController Instance { get; private set; }
+    
     [Header("Player Speed")]
     private float xInput;
     private float zInput;
@@ -22,6 +25,20 @@ public class PlayerController : MonoBehaviour
     
     private Vector3 velocity;
     private bool isGrounded;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     
     private void Update()
     {

@@ -27,7 +27,7 @@ public class EnvironmentSpawner : MonoBehaviour
     void Start()
     {
         spawnGenerator();
-       // PlayerSpawner();
+        PlayerSpawner();
         EnemeySpawner();
     }
 
@@ -54,7 +54,7 @@ public class EnvironmentSpawner : MonoBehaviour
         }
     }
 
-    /*
+    
     private void PlayerSpawner()
     {
         float spawnPosX = Random.Range(-playerSpawnRange, playerSpawnRange);
@@ -64,8 +64,7 @@ public class EnvironmentSpawner : MonoBehaviour
         Instantiate(playerPrefab, randomPos, playerPrefab.transform.rotation);
        
     }
-    */
-
+    
     private Vector3 EnemeySpawner()
     {
         float spawnPosX = Random.Range(-enemySpawnRange, enemySpawnRange);
